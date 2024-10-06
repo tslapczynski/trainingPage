@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Model Training Interface</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Customize Model Training</h1>
+
+        <div class="main-content">
+            <!-- Left side: Form to input training data -->
+            <div class="form-section">
+                <!-- Step 1: Name your model -->
+                <div class="form-group">
+                    <label for="modelName">Step 1: Name your model</label>
+                    <input type="text" id="modelName" placeholder="Enter model name">
+                </div>
+
+                <!-- Step 2: Choose track -->
+                <div class="form-group">
+                    <label for="trackSelection">Step 2: Choose track</label>
+                    <select id="trackSelection">
+                        <option value="track1">Track 1</option>
+                        <option value="track2">Track 2</option>
+                        <option value="track3">Track 3</option>
+                    </select>
+                </div>
+
+                <!-- Step 3: Choose algorithm type -->
+                <div class="form-group">
+                    <label for="algorithmType">Step 3: Choose algorithm type</label>
+                    <select id="algorithmType">
+                        <option value="ppo">Proximal Policy Optimization (PPO)</option>
+                        <option value="sac">Soft Actor Critic (SAC)</option>
+                    </select>
+                </div>
+
+                <!-- Step 4: Customize reward function -->
+                <div class="form-group">
+                    <label for="rewardFunction">Step 4: Customize reward function</label>
+                    <textarea id="rewardFunction" rows="10">
+def reward_function(params):
+    track_width = params['track_width']
+    distance_from_center = params['distance_from_center']
+    # Example: Give higher rewards for being closer to the center
+    marker_1 = 0.1 * track_width
+    marker_2 = 0.25 * track_width
+    marker_3 = 0.5 * track_width
+    if distance_from_center <= marker_1:
+        reward = 1.0
+    elif distance_from_center <= marker_2:
+        reward = 0.5
+    elif distance_from_center <= marker_3:
+        reward = 0.1
+    else:
+        reward = 0.0
+    return reward
+                    </textarea>
+                </div>
+
+                <!-- Step 5: Choose duration -->
+                <div class="form-group">
+                    <label for="duration">Step 5: Choose training duration (minutes)</label>
+                    <input type="number" id="duration" min="1" max="120" value="30">
+                </div>
+
+                <!-- Step 6: Submit -->
+                <div class="form-group">
+                    <button id="startTrainingButton">Start Training</button>
+                </div>
+
+                <!-- Output: Results -->
+                <div class="form-group">
+                    <h2>Training Results</h2>
+                    <div id="output"></div>
+                </div>
+            </div>
+
+            <!-- Right side: Information panel -->
+            <div class="info-section">
+                <h2>Instructions and Info</h2>
+                <div class="info-box">
+                    <h3>Function header & variables</h3>
+                    <p>Defines the reward function header and variables, such as the track width and distance from the centerline.</p>
+
+                    <h3>Input Parameters</h3>
+                    <p>Parameters passed to the function, such as car's position, speed, and distance from the track center.</p>
+
+                    <h3>Helper code to create three bands on the track</h3>
+                    <p>The function divides the track into three zones based on the distance from the center. Rewards are adjusted depending on how far the car strays from the center.</p>
+
+                    <h3>Assign the reward values</h3>
+                    <p>Based on the car's current position with respect to the centerline, assign higher rewards for staying close to the center, and lower for moving away.</p>
+
+                    <h3>Return the reward</h3>
+                    <p>The reward value is returned to adjust the agent's behavior during the training process.</p>
+
+                    <h3>Algorithm Choices:</h3>
+                    <p><strong>Proximal Policy Optimization (PPO):</strong> A more data-hungry algorithm that generally produces consistent results with larger datasets.</p>
+                    <p><strong>Soft Actor Critic (SAC):</strong> Requires less data and learns faster but may produce less consistent results.</p>
+                    <p>We encourage you to experiment with both algorithms to understand which one works better for your model and environment.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
